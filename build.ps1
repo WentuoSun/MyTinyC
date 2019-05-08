@@ -1,0 +1,1 @@
+gcc src/*.c -I ./include/ -g -O0 -Wall -o main.exe --std=c11

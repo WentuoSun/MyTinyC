@@ -1,0 +1,5 @@
+main () {
+    int a = 1;
+    char c_a = 'c';
+    show(a);
+}

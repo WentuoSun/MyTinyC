@@ -16,7 +16,7 @@ void ReadFile() {
     }
     src[i] = '\0';     //为文件末尾添加EOF
     fclose(fp);
-    printf("\nthe original code is \n%s", src);
+    //printf("\nthe original code is \n%s", src);
 }
 void ClearAnnoation(){
     int i,j;
@@ -39,12 +39,26 @@ void ClearAnnoation(){
         }
         text[j++] = src[i++]; 
     }
+    text[j] = '\0';
     free(src);//释放存储空间
+    //printf("\n after clear the annoation is \n%s", text);
+    token  = text;
+}
+
+void next(){
+    token++;
+}
+
+void back(){
+    token--;
 }
 //测试
-int main(){
-    ReadFile();
-    ClearAnnoation();
-    printf("\n after clear the annoation is \n%s", text);
-
-}
+//
+//int main(){
+//    ReadFile();
+//    ClearAnnoation();
+//    while(*token != '\0') {
+//        printf("%c", *token);
+//        next();
+//    }
+//}
