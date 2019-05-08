@@ -1,6 +1,6 @@
-#ifndef ReadFil
+#ifndef _ReadFile_H_
 
-#define ReadFil
+#define _ReadFile_H_
 
 #include "common.h"
 
@@ -14,10 +14,9 @@ FILE *fp;        //文件描述字，调用open()时返回，需要在read()中�
 //读取文件，文件内容保存到src所指向的字符串中
 void ReadFile();
 //排除掉所有注释，文件内容保存到text所指向的字符串中；
-void ClearAnnoation();
+void ClearComment();
 //取下一个字符
 void next();
-
 //回退一个字符
 void back();
 

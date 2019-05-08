@@ -3,9 +3,9 @@
 
 int main(){
     ReadFile();
-    ClearAnnoation();
+    ClearComment();
     LexNode *head = Lexical();
-    PrintAllNode();
+    PrintAllNode(head);
     //printf("%d", head->next->Value.int_val);
 }
  

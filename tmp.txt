@@ -1,1 +1,8 @@
 /*/*/
+> < >= <= != // && ||
++ 1 - 2 * 3 / 4
+if while continue break
+else main show 
+dwada_dada _dadsad
+    dwdsadsa_   'a' 'b'
+{ }  () ;;; ,,,

@@ -18,7 +18,7 @@ void ReadFile() {
     fclose(fp);
     //printf("\nthe original code is \n%s", src);
 }
-void ClearAnnoation(){
+void ClearComment(){
     int i,j;
     int tmpi;
     i = j = tmpi = 0;
@@ -41,7 +41,7 @@ void ClearAnnoation(){
     }
     text[j] = '\0';
     free(src);//释放存储空间
-    //printf("\n after clear the annoation is \n%s", text);
+    //printf("\n after clear the Comment is \n%s", text);
     token  = text;
 }
 
@@ -56,7 +56,7 @@ void back(){
 //
 //int main(){
 //    ReadFile();
-//    ClearAnnoation();
+//    ClearComment();
 //    while(*token != '\0') {
 //        printf("%c", *token);
 //        next();

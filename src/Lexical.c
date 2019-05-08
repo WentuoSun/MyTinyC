@@ -1,5 +1,6 @@
 #include "Lexical.h"
 
+//枚举类型对应名称，输出所有节点时用
 char NameTable[][25] = {
 "ID", "Int", "Char",
 "If", "Else", "While", "Continue", "Break", "True", "False", "Main", "Show",
@@ -10,7 +11,10 @@ char NameTable[][25] = {
 "GT", "LT", "GE", "LE", "NE", "AS", "EQ", "AND", "OR", "NOT",
 };
 
- int Classification(){ //第一步分类，分为数字，字母，关系运算符，各种符号
+
+
+//预分析，分为数字，字母，关系运算符，各种符号以及字符常量
+ int Classification(){ 
     if (*token > '0' && *token < '9') {
         return digit;
     } else if ( ( *token >= 'a' && *token <= 'z') || (*token >= 'A' && *token <= 'Z') || *token == '_' ) {
@@ -35,33 +39,8 @@ char NameTable[][25] = {
     }
 }
 
-LexNode* Lexical() {
-    LexLink = (LexNode*)malloc(sizeof(LexNode)); //建立并初始化空头指针，Head指向该指针，
-    LexLink -> next = NULL;
-    Head = LexLink;
-    Head -> front = NULL;
-    Head -> type = -1;
-    while (*token != '\0') {
-        while (*token == ' ' || *token == '\n') {
-            next();
-            continue;                          
-        }
-        if (*token == '\0' ) { break;}
-        Rawtype = Classification();
-        switch (Rawtype) {
-            case -2:     {printf("can not analyse this symbol :%c \n" , *token); return Head;}
-            case const_char:    {CharAnalyse(); break;}
-            case digit:   {DigitAnalyse(); break;}
-            case letter:   {LetterAnalyse(); break;}
-            case Relational_Operator:   {Relational_OperatorAnalyse(); break;}
-            case Plus: case Less: case Multi: case Except: case Braces_l: case Braces_r: case Parent_l: case Parent_r: case Semi: case Comma: 
-                        {SymbolAnalyse(); break;}
-        }
-    }
-    return Head;
-}
-
-void CharAnalyse() {
+ //创建新节点，保存字符常量的值
+void CharAnalyse() { 
     next();
     LexLink -> next = (LexNode *)malloc( sizeof (LexNode) ) ;
     TempPointer = LexLink;
@@ -74,6 +53,7 @@ void CharAnalyse() {
     next();
 }
 
+//将一串数字转为整数，其值保存在新结点中
 void DigitAnalyse() {
     char *tempnum = (char*)malloc(sizeof(char)*20) ;
     int i = 0;
@@ -95,41 +75,41 @@ void DigitAnalyse() {
     free(tempnum);
 }
 
-void Relational_OperatorAnalyse(){
-    int index = 0;
+//将 > < = ! | & 的组合进一步分析为关系表达式，新节点只保存其类型
+void Relational_OperatorAnalyse(){ 
     int temptype;
-    if(token[index] == '>') {
-        if(token[ index+1 ] == '=') {
+    if(token[0] == '>') {
+        if(token[ 1 ] == '=') { //双字符表达式必须进行两次next(),使token指针指向下一个需要分析的字符
             temptype = GE;
-            next();
+            next();             //在判断中执行一次next()， 程序结束时执行一次next() 下同
         } else {
             temptype = GT;
         }
-    } else if ( token[index] == '<') {
-        if(token[ index+1 ] == '=') {
+    } else if ( token[0] == '<') {
+        if(token[ 1 ] == '=') {
             temptype = LE;
             next();
         } else { 
             temptype = LT;
         }
-    } else if ( token[index] == '=') {
-        if(token[ index+1 ] == '=' ) {
+    } else if ( token[0] == '=') {
+        if(token[ 1 ] == '=' ) {
             temptype = EQ;
             next();
         } else {
             temptype = AS;
         }
-    } else if( token[index] == '!' ) {
-        if (token[ index+1 ] == '=') {
+    } else if( token[0] == '!' ) {
+        if (token[ 1 ] == '=') {
             temptype = NE;
             next();
         } else {
             temptype = NOT;
         }
-    } else if( token[index] == '&' && token[index+1] == '&' ) {
+    } else if( token[0] == '&' && token[1] == '&' ) {
         temptype = AND;
         next();
-    } else if (token[index] == '|' && token[index+1] == '|' ) {
+    } else if (token[0] == '|' && token[1] == '|' ) {
         temptype = OR;
         next();
     } 
@@ -142,6 +122,7 @@ void Relational_OperatorAnalyse(){
     next();
 }
 
+//将一串字母分析为C语言关键字或者id，若为id，则在新节点中保存其命名
 void LetterAnalyse() {
     char *tempstr = (char*)malloc(sizeof(char) * 100);
     int temptype;
@@ -191,6 +172,7 @@ void LetterAnalyse() {
     free(tempstr);
 }
 
+//将， ； + 等符号保存到创建的新结点中，只保存其类型
 void SymbolAnalyse() {
     LexLink -> next = (LexNode*)malloc(sizeof(LexNode));
     TempPointer = LexLink;
@@ -201,8 +183,8 @@ void SymbolAnalyse() {
     next();
 }
 
-void PrintAllNode() {
-    LexNode * head = Head;
+//输出head所指链表的所有元素
+void PrintAllNode(LexNode* head) {
     while( head != NULL) {
         switch ( head->type ){
         case -1 : { break; }
@@ -213,4 +195,31 @@ void PrintAllNode() {
         }
         head = head -> next;
     }
+}
+
+//词法分析主函数
+LexNode* Lexical() {
+    LexLink = (LexNode*)malloc(sizeof(LexNode)); //建立并初始化空头指针，Head指向该指针，
+    LexLink -> next = NULL;
+    Head = LexLink;
+    Head -> front = NULL;
+    Head -> type = -1;
+    while (*token != '\0') {
+        while (*token == ' ' || *token == '\n') { //跳过空格和换行符
+            next();
+            continue;                          
+        }
+        if (*token == '\0' ) { break;}  //若跳过空格后到达文件底部，则退出循环
+        Rawtype = Classification();     //预分析
+        switch (Rawtype) {  //根据预分析后Rawtype的值进行下一步分析
+            case -2:     {printf("can not analyse this symbol :%c \n" , *token); return Head;} //无法识别的符号，输出错误信息
+            case const_char:    {CharAnalyse(); break;}     //字符常量分析
+            case digit:   {DigitAnalyse(); break;}          //数字分析
+            case letter:   {LetterAnalyse(); break;}        //字母分析
+            case Relational_Operator:   {Relational_OperatorAnalyse(); break;}      //关系表达式分析
+            case Plus: case Less: case Multi: case Except: case Braces_l: case Braces_r: case Parent_l: case Parent_r: case Semi: case Comma: 
+                        {SymbolAnalyse(); break;}           //符号分析
+        }
+    }
+    return Head;
 }
