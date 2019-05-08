@@ -5,7 +5,7 @@ char NameTable[][25] = {
 "If", "Else", "While", "Continue", "Break", "True", "False", "Main", "Show",
 "const_int", "const_char", 
 "digit",  "letter",  "Relational_Operator",
-"Plus", "Multi", "Less", "Except",
+"Plus", "Less", "Multi", "Except",
 "Braces_l", "Braces_r", "Parent_l", "Parent_r", "Semi", "Comma",
 "GT", "LT", "GE", "LE", "NE", "AS", "EQ", "AND", "OR", "NOT",
 };
@@ -15,7 +15,7 @@ char NameTable[][25] = {
         return digit;
     } else if ( ( *token >= 'a' && *token <= 'z') || (*token >= 'A' && *token <= 'Z') || *token == '_' ) {
         return letter;
-    } else if ( *token == '>' || *token == '<' || *token == '=' || *token == '|' || *token == '!') {
+    } else if ( *token == '>' || *token == '<' || *token == '=' || *token == '|' || *token == '!' || *token == '&') {
         return Relational_Operator;
     } else if ( token[0] == '\'' && token[2] == '\'' ) {
         return const_char;

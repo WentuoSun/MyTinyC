@@ -32,7 +32,7 @@ void ClearAnnoation(){
                 while ( src[i] != '\n') { i++; }
                 i++;
             } else if ( src[tmpi] == '*') {
-                i++;
+                i += 2;
                 while ( src[i] != '*' || src[i+1] != '/') { i++; }
                 i += 2;
             }
