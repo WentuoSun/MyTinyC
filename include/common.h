@@ -9,5 +9,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+
+//#define LexicalAnalysis 1
+#define SyntaxAnalysis 1
  
 #endif

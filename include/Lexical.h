@@ -1,3 +1,4 @@
+//词法分析头文件
 #ifndef _Lexical_H_
 
 #define _Lexical_H_

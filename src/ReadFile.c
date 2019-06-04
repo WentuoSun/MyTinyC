@@ -52,13 +52,3 @@ void next(){
 void back(){
     token--;
 }
-//测试
-//
-//int main(){
-//    ReadFile();
-//    ClearComment();
-//    while(*token != '\0') {
-//        printf("%c", *token);
-//        next();
-//    }
-//}

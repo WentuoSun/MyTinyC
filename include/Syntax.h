@@ -1,13 +1,13 @@
+//语法分析头文件
 #ifndef _Syntactic_H
 
 #define _Syntactic_H
 
 
 #include "Lexical.h"
-LexNode* NextNode(LexNode *n) ;
-LexNode* PrevNode(LexNode *n) ;
-void match (int type) ;
 
+
+//id存储节点
 typedef struct idNode{
     char idname[20];
     int type;
@@ -15,6 +15,8 @@ typedef struct idNode{
     struct idNode *next;
 }IdNode ;
 
+extern char NameTable[][25];
+//全局变量
 LexNode *Cnode ;
 LexNode *EndNode ;
 LexNode *ConditionNode ;
@@ -22,6 +24,10 @@ bool IsBreak ;
 bool IsContinue ;
 IdNode *IdTable ;
 
+//语法分析函数声明
+LexNode* NextNode(LexNode *n) ;
+LexNode* PrevNode(LexNode *n) ;
+void match (int type) ;
 void Parse_main();
 void Parse_S();
 int Parse_E() ;
@@ -43,6 +49,8 @@ bool Parse_TB();
 bool Parse_B1(bool value);
 bool Parse_TB1(bool value);
 bool Parse_FB();
+int IdType(char * idname);
+void Parse_A();
 
 
 #endif
