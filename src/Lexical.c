@@ -1,5 +1,8 @@
 #include "Lexical.h"
 
+
+
+
 //枚举类型对应名称，输出所有节点时用
 char NameTable[][25] = {
 "ID", "Int", "Char",
@@ -10,10 +13,8 @@ char NameTable[][25] = {
 "Braces_l", "Braces_r", "Parent_l", "Parent_r", "Semi", "Comma",
 "GT", "LT", "GE", "LE", "NE", "AS", "EQ", "AND", "OR", "NOT",
 };
-
-
-
-//预分析，分为数字，字母，关系运算符，各种符号以及字符常量
+ 
+//预分析，将*token分为数字，字母，关系运算符，各种符号以及字符常量
  int Classification(){ 
     if (*token > '0' && *token < '9') {
         return digit;
@@ -25,17 +26,17 @@ char NameTable[][25] = {
         return const_char;
     }
     switch (*token) {
-        case '+' : { return Plus;  }
+        case '+' : { return Plus;   }
         case '-' : { return Less;   }
-        case '*' : { return Multi;   }
-        case '/' : { return Except;   }
+        case '*' : { return Multi;  }
+        case '/' : { return Except;     }
         case '{' : { return Braces_l;   }
         case '}' : { return Braces_r;   }
         case '(' : { return Parent_l;   }
         case ')' : { return Parent_r;   }
-        case ';' : { return Semi;     }
+        case ';' : { return Semi;   }
         case ',' : { return Comma;  }
-        default  : { next(); return -2;  }
+        default  : { next(); return -2; }
     }
 }
 
@@ -45,7 +46,7 @@ void CharAnalyse() {
     LexLink -> next = (LexNode *)malloc( sizeof (LexNode) ) ;
     TempPointer = LexLink;
     LexLink = LexLink -> next;
-    LexLink -> front = TempPointer;
+    LexLink -> Prev = TempPointer;
     LexLink -> type = const_char;
     LexLink -> Value.char_val = *token;
     LexLink -> next = NULL;
@@ -68,7 +69,7 @@ void DigitAnalyse() {
     LexLink -> next = (LexNode *)malloc( sizeof (LexNode) ) ;
     TempPointer = LexLink;
     LexLink = LexLink -> next;
-    LexLink -> front = TempPointer;
+    LexLink -> Prev = TempPointer;
     LexLink -> type = const_int;
     LexLink -> Value.int_val = num;
     LexLink -> next = NULL;
@@ -116,7 +117,7 @@ void Relational_OperatorAnalyse(){
     LexLink -> next = (LexNode*)malloc( sizeof(LexNode) );
     TempPointer = LexLink;
     LexLink = LexLink -> next;
-    LexLink -> front = TempPointer;
+    LexLink -> Prev = TempPointer;
     LexLink -> type = temptype;
     LexLink -> next = NULL;
     next();
@@ -162,7 +163,7 @@ void LetterAnalyse() {
     LexLink -> next = (LexNode*)malloc( sizeof(LexNode) ) ;
     TempPointer = LexLink;
     LexLink = LexLink -> next;
-    LexLink -> front = TempPointer;
+    LexLink -> Prev = TempPointer;
     LexLink -> type = temptype;
     LexLink -> next = NULL;
     if ( temptype == ID ) {
@@ -177,9 +178,9 @@ void SymbolAnalyse() {
     LexLink -> next = (LexNode*)malloc(sizeof(LexNode));
     TempPointer = LexLink;
     LexLink = LexLink -> next;
-    LexLink -> front = TempPointer;
-    LexLink -> type = Rawtype;
-    LexLink -> next = NULL;
+    LexLink -> Prev = TempPointer;
+    LexLink -> type  = Rawtype;
+    LexLink -> next  = NULL;
     next();
 }
 
@@ -187,11 +188,11 @@ void SymbolAnalyse() {
 void PrintAllNode(LexNode* head) {
     while( head != NULL) {
         switch ( head->type ){
-        case -1 : { break; }
-        case ID : { printf("ID : %s\n", head -> Value.name); break; } 
-        case const_char : { printf("const_char : %c\n", head -> Value.char_val); break; }
-        case const_int : { printf("const_int : %d\n", head -> Value.int_val); break; }  
-        default: { printf("%s\n",NameTable[ (int)head->type ] );  }
+        case -1 :           { break; }
+        case ID :           { printf("ID : %s\n", head -> Value.name); break; } 
+        case const_char :   { printf("const_char : %c\n", head -> Value.char_val); break; }
+        case const_int :    { printf("const_int : %d\n", head -> Value.int_val); break; }  
+        default:            { printf("%s\n",NameTable[ (int)head->type ] );  }
         }
         head = head -> next;
     }
@@ -202,7 +203,7 @@ LexNode* Lexical() {
     LexLink = (LexNode*)malloc(sizeof(LexNode)); //建立并初始化空头指针，Head指向该指针，
     LexLink -> next = NULL;
     Head = LexLink;
-    Head -> front = NULL;
+    Head -> Prev = NULL;
     Head -> type = -1;
     while (*token != '\0') {
         while (*token == ' ' || *token == '\n') { //跳过空格和换行符
@@ -212,13 +213,13 @@ LexNode* Lexical() {
         if (*token == '\0' ) { break;}  //若跳过空格后到达文件底部，则退出循环
         Rawtype = Classification();     //预分析
         switch (Rawtype) {  //根据预分析后Rawtype的值进行下一步分析
-            case -2:     {printf("can not analyse this symbol :%c \n" , *token); return Head;} //无法识别的符号，输出错误信息
-            case const_char:    {CharAnalyse(); break;}     //字符常量分析
-            case digit:   {DigitAnalyse(); break;}          //数字分析
-            case letter:   {LetterAnalyse(); break;}        //字母分析
+            case -2:                    {printf("can not analyse this symbol :%c \n" , *token); return Head;} //无法识别的符号，输出错误信息
+            case const_char:            {CharAnalyse(); break;}     //字符常量分析
+            case digit:                 {DigitAnalyse(); break;}          //数字分析
+            case letter:                {LetterAnalyse(); break;}        //字母分析
             case Relational_Operator:   {Relational_OperatorAnalyse(); break;}      //关系表达式分析
             case Plus: case Less: case Multi: case Except: case Braces_l: case Braces_r: case Parent_l: case Parent_r: case Semi: case Comma: 
-                        {SymbolAnalyse(); break;}           //符号分析
+                                        {SymbolAnalyse(); break;}           //符号分析
         }
     }
     return Head;

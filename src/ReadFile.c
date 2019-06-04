@@ -40,7 +40,7 @@ void ClearComment(){
         text[j++] = src[i++]; 
     }
     text[j] = '\0';
-    free(src);//释放存储空间
+    free(src);//释放src存储空间
     //printf("\n after clear the Comment is \n%s", text);
     token  = text;
 }

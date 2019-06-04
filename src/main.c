@@ -1,11 +1,12 @@
 
 #include "Lexical.h"
-
+#include "Syntactic.h"
 int main(){
     ReadFile();
     ClearComment();
-    LexNode *head = Lexical();
-    PrintAllNode(head);
-    //printf("%d", head->next->Value.int_val);
+    LexNode *head1 = Lexical();
+    PrintAllNode(head1);
+    Syntactic(head1);
+    return 0;
 }
  

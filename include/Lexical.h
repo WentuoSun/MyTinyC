@@ -34,6 +34,7 @@ enum { //id 和关键字
     NOT,        // !
 };
 
+
 //共用体，为节点存储int，char值 或为id存储名字
 typedef union data
 {
@@ -46,7 +47,7 @@ typedef union data
 typedef struct Node{
     int type;   
     Data Value;
-    struct Node *front, *next; //设置双向链表，为语法分析可能的回溯创造条件
+    struct Node *Prev, *next; //设置双向链表，为语法分析可能的回溯创造条件
 }LexNode;
 
 //链表指针
