@@ -9,23 +9,23 @@ enum { //id 和关键字
     ID = 0, Int, Char, 
     If,  Else, While, Continue, Break, True, False, Main, Show,
     const_int, const_char,
-    digit,      //数字，具体值为多少后期计算
-    letter,     //字母，具体是id，关键字，后期确定
+    digit,      //数字，具体值为多少后期计算 
+    letter,     //字母，具体是id，关键字，后期确定  //15
     Relational_Operator,      // > < = ! & | 关系运算符，具体是什么后期判断
     Plus,       // +
     Less,       // -
     Multi,      // *
-    Except,     // /    
+    Except,     // /    20
     Braces_l,   // {
     Braces_r,   // }
     Parent_l,   // (
     Parent_r,   // )
-    Semi,       // ;
+    Semi,       // ;   25
     Comma,      // ,    
     GT,         // >
     LT,         // < 
     GE,         // >=
-    LE,         // <=   
+    LE,         // <=   30
     NE,         // !=
     AS,         // = 
     EQ,         // == 

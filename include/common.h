@@ -1,8 +1,8 @@
 //常用头文件
 
-#ifndef common
+#ifndef _common_H
  
-#define common
+#define _common_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

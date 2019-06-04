@@ -1,6 +1,7 @@
 
 #include "Lexical.h"
-#include "Syntactic.h"
+//#include "Syntactic.h"
+extern int Syntactic(LexNode *head);
 int main(){
     ReadFile();
     ClearComment();

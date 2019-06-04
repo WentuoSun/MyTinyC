@@ -1,3 +1,5 @@
 main() {
-    show(1);
+    char i ;
+    i = 'z';
+    show(i);
 }

@@ -16,7 +16,7 @@ char NameTable[][25] = {
  
 //预分析，将*token分为数字，字母，关系运算符，各种符号以及字符常量
  int Classification(){ 
-    if (*token > '0' && *token < '9') {
+    if (*token >= '0' && *token <= '9') {
         return digit;
     } else if ( ( *token >= 'a' && *token <= 'z') || (*token >= 'A' && *token <= 'Z') || *token == '_' ) {
         return letter;
