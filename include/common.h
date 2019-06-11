@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-//#define LexicalAnalysis 1
-#define SyntaxAnalysis 1
+#define LexicalAnalysis 1
+//#define SyntaxAnalysisDetail 1
  
 #endif

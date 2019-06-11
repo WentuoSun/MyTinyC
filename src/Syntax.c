@@ -52,7 +52,7 @@ LexNode* FindMatchBraces(){
 }
 //基本语法分析函数
 void Parse_main(){
-    #ifdef SyntaxAnalysis 
+    #ifdef SyntaxAnalysisDetail 
     printf("\nFUNC -> main() {S} \n");
     #endif
     match(Main);
@@ -64,7 +64,7 @@ void Parse_main(){
 }
 void Parse_S(){
     if(Cnode->type == Show) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("S -> Show(E);S\n");
         #endif    
         match( Show);
@@ -88,19 +88,19 @@ void Parse_S(){
         match(Semi);
         Parse_S();
     }else if (Cnode->type == Int || Cnode->type == Char) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("S -> D S \n");
         #endif
         Parse_D();
         Parse_S();
     } else if (Cnode->type ==ID) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("S -> A S\n");
         #endif
         Parse_A();
         Parse_S();
     } else if (Cnode->type == If) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("S -> if(B) {S} [else {S}] S\n");
         #endif
         match(If);
@@ -115,10 +115,8 @@ void Parse_S(){
             Cnode = MatchBraces;
         }
         if(IsBreak) {
-            Cnode = EndNode;
             return ;
         } else if(IsContinue){
-            Cnode = ConditionNode;
             IsContinue = false;
             return;
         }
@@ -134,16 +132,15 @@ void Parse_S(){
                     match(Braces_r);
                 }
                 if(IsBreak) {
-                    Cnode = EndNode;
                     return ;
                 } else if(IsContinue){
-                    Cnode = ConditionNode;
+                    IsContinue = false;
                     return;
-                }        
+                }
         }
         Parse_S();
     } else if (Cnode->type == While ){
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("S -> while(B) {S} S\n");
         #endif
         match(While);
@@ -155,6 +152,11 @@ void Parse_S(){
         EndNode = FindMatchBraces();
         while(bvalue){
             Parse_S();
+            if(IsBreak) {
+                Cnode = EndNode;
+                IsBreak = false;
+                break ;
+            }
             Cnode = ConditionNode;
             bvalue = Parse_B();
             match(Parent_r);

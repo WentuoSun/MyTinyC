@@ -51,13 +51,13 @@ int IdType(char * idname) {
 }
 int Parse_T() {
     if (Cnode->type == Int) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("T -> int\n");
         #endif
         match(Int);
         return Int;
     } else if(Cnode->type == Char) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("T -> char\n");
         #endif
         match(Char);
@@ -69,7 +69,7 @@ int Parse_T() {
 }
 void  Parse_L(int type) {
     if (Cnode->type == Comma){
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("L -> ,id [= E] L \n");
         #endif
         match(Comma);
@@ -82,15 +82,15 @@ void  Parse_L(int type) {
             AssignId(idnode->Value.name,(Data)value);
         }
     } else {
-        #ifdef SyntaxAnalysis 
-        printf("L -> ε\n");
+        #ifdef SyntaxAnalysisDetail 
+        printf("L -> null\n");
         #endif
         return ;
     }
 
 }
 void Parse_A() {
-    #ifdef SyntaxAnalysis 
+    #ifdef SyntaxAnalysisDetail 
     printf("A -> id = E \n");
     #endif
     LexNode *idnode = Cnode;
@@ -108,7 +108,7 @@ void Parse_A() {
     return ;
 }
 void Parse_D() {
-    #ifdef SyntaxAnalysis 
+    #ifdef SyntaxAnalysisDetail 
     printf("D -> T id [ = E ] L\n");
     #endif
     int TypeofId = Parse_T();
@@ -130,14 +130,14 @@ void Parse_D() {
 }
 char Parse_G(){
     if (Cnode->type == ID){
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("G -> id\n");
         #endif
         char value = LookupId().char_val;
         match(ID);
         return value;
     } else if (Cnode->type == const_char) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("G -> char\n");
         #endif
         char value = Cnode->Value.char_val;

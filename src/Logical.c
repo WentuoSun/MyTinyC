@@ -2,7 +2,7 @@
 
 //逻辑表达式计算模块
 bool Parse_B(){
-    #ifdef SyntaxAnalysis 
+    #ifdef SyntaxAnalysisDetail 
     printf("B -> TB B1\n");
     #endif
     bool bvalue_1 = Parse_TB();
@@ -10,7 +10,7 @@ bool Parse_B(){
     return bvalue_2;
 }
 bool Parse_TB(){
-    #ifdef SyntaxAnalysis 
+    #ifdef SyntaxAnalysisDetail 
     printf("TB -> FB TB1\n");
     #endif
     bool bavlue_1 = Parse_FB();
@@ -19,7 +19,7 @@ bool Parse_TB(){
 }
 bool Parse_B1(bool value) {
     if (Cnode->type == OR) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("B1 -> || TB B1\n");
         #endif
         match(OR);
@@ -27,15 +27,15 @@ bool Parse_B1(bool value) {
         bool bvalue_2 = Parse_B1(bvalue_1);
         return value || bvalue_2;
     } else {
-        #ifdef SyntaxAnalysis 
-        printf("B1 -> ε\n");
+        #ifdef SyntaxAnalysisDetail 
+        printf("B1 -> null\n");
         #endif
         return value;
     }
 }
 bool Parse_TB1(bool value) {
     if (Cnode->type == AND) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("TB1 -> && FB TB1\n");
         #endif
         match(AND);
@@ -43,31 +43,31 @@ bool Parse_TB1(bool value) {
         bool bvalue_2 = Parse_TB1(bvalue_1);
         return value && bvalue_2;
     } else {
-        #ifdef SyntaxAnalysis 
-        printf("TB1 -> ε\n");
+        #ifdef SyntaxAnalysisDetail 
+        printf("TB1 -> null\n");
         #endif
-        #ifdef SyntaxAnalysis 
-        printf("ε\n");
+        #ifdef SyntaxAnalysisDetail 
+        printf("null\n");
         #endif
         return value;
     }
 }
 bool Parse_FB() {
     if(Cnode->type == NOT) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("FB -> !B\n");
         #endif
         match(NOT);
         bool bvalue = Parse_B();
         return !bvalue;
     } else if(Cnode ->type == True) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("FB -> ture\n");
         #endif
         match(True);
         return true;
     } else if(Cnode ->type == False) {
-        #ifdef SyntaxAnalysis 
+        #ifdef SyntaxAnalysisDetail 
         printf("FB -> false\n");
         #endif
         match(False);
@@ -75,49 +75,49 @@ bool Parse_FB() {
     } else {
         int value_1 = Parse_E();
         if(Cnode ->type == GT) {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("FB -> E > E\n");
             #endif
             match(GT);
             int value_2 = Parse_E();
             return value_1>value_2?true:false;
         } else if(Cnode->type == LT) {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("FB -> E < E\n");
             #endif
             match(LT);
             int value_2 = Parse_E();
             return value_1<value_2?true:false;
         } else if(Cnode->type == GE) {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("Fb -> E >= E\n");
             #endif
             match(GE);
             int value_2 = Parse_E();
             return value_1>=value_2?true:false;
         } else if(Cnode->type == LE) {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("FB -> E <= E\n");
             #endif
             match(LE);
             int value_2 = Parse_E();
             return value_1<=value_2?true:false;
         } else if(Cnode->type == NE) {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("FB -> E != E\n");
             #endif
             match(NE);
             int value_2 = Parse_E();
             return value_1!=value_2?true:false;
         } else if(Cnode->type == EQ) {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("FB -> E == E\n");
             #endif
             match(EQ);
             int value_2 = Parse_E();
             return value_1==value_2?true:false;
         } else {
-            #ifdef SyntaxAnalysis 
+            #ifdef SyntaxAnalysisDetail 
             printf("FB -> E\n");
             #endif
             return value_1==0?false:true;

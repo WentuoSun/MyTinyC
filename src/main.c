@@ -10,6 +10,7 @@ int main(){
     #ifdef SyntaxAnalysis
     Syntactic(head1);
     #endif
+    Syntactic(head1);
     return 0;
 }
  
